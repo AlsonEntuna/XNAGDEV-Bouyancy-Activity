@@ -1,6 +1,8 @@
 var FLUID_DENSITY = 0.00014;
 var FLUID_DRAG = 2.0;
 var score = 0;
+var timer = 2;
+var elapsedTime = 0;
 
 var Buoyancy = function ()
 {
@@ -145,6 +147,33 @@ function MoveLeft() {
 function MoveRight() {
     console.log("Moving Right");
 	paddle.getPos().x += 10;
+	//Spawn();
+}
+
+function Spawn()
+{
+		Demo.call(this);
+	var space = this.space;
+	space.iterations = 30;
+	space.gravity = cp.v(0,-500);
+//	cpSpaceSetDamping(space, 0.5);
+	space.sleepTimeThreshold = 0.5;
+	space.collisionSlop = 0.5;
+	
+		width = 10.0;
+		height = width * 1.5;
+		mass = 0.3 * FLUID_DENSITY * width * height;
+		moment = cp.momentForBox(mass, width, height);
+
+		body = space.addBody(new cp.Body(mass, moment));
+		body.setPos(cp.v(Math.floor((Math.random() * 300) + 100), Math.floor((Math.random() * 300) + 190)));
+		body.setVel(cp.v(0, -100));
+		body.setAngVel(1);
+
+		shape = space.addShape(new cp.BoxShape(body, width, height));
+		shape.setFriction(0.8);
+		space.addCollisionHandler( 1, 0, null, this.waterPreSolve, null, null);
+		console.log("Spawning");
 }
 
 // Input Events
@@ -160,9 +189,12 @@ addEventListener("keyup", function (e)
 
 Buoyancy.prototype = Object.create(Demo.prototype);
 
+
+
 // Update Func
 Buoyancy.prototype.update = function(dt)
 {
+
 	var steps = 3;
 	dt /= steps;
 	for (var i = 0; i < 3; i++){
@@ -170,6 +202,12 @@ Buoyancy.prototype.update = function(dt)
 	}
 	
 	//document.getElementById("demo").onkeypress = function() {myFunction()};
+	elapsedTime += dt;
+	if (elapsedTime >= timer)
+	{
+		Spawn();
+		elapsedTime = 0;
+	}
 	
 	if (37 in keysDown) // left
     {
@@ -179,6 +217,8 @@ Buoyancy.prototype.update = function(dt)
     {
         MoveRight();
     }
+	
+	//console.log("Timer: " + elapsedTime.toString());
 };
 
 // IDK
