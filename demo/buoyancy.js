@@ -1,5 +1,6 @@
 var FLUID_DENSITY = 0.00014;
 var FLUID_DRAG = 2.0;
+var score = 0;
 
 var Buoyancy = function ()
 {
@@ -70,12 +71,12 @@ var Buoyancy = function ()
 		var mass = 0.3*FLUID_DENSITY*width*height;
 		var moment = cp.momentForBox(mass, width, height);
 
-		body = space.addBody( new cp.Body(mass, moment));
-		body.setPos( cp.v(270, 140));
-		body.setVel( cp.v(0, -100));
-		body.setAngVel( 1 );
+		paddle = space.addBody( new cp.Body(mass, moment));
+		paddle.setPos( cp.v(270, 140));
+		paddle.setVel( cp.v(0, -100));
+		paddle.setAngVel( 1 );
 
-		shape = space.addShape( new cp.BoxShape(body, width, height));
+		shape = space.addShape( new cp.BoxShape(paddle, width, height));
 		shape.setFriction(0.8);
 	// }
 
@@ -127,9 +128,35 @@ var Buoyancy = function ()
 		shape = space.addShape(new cp.BoxShape(body, width, height));
 		shape.setFriction(0.8);
     // }
+	
+	
 
 	space.addCollisionHandler( 1, 0, null, this.waterPreSolve, null, null);
 };
+
+// Movement for the PADDLE
+function MoveLeft() {
+    console.log("Moving Left" + paddle.getPos().x);
+	//paddle.setPos(cp.v(paddle.getPos.x -= 1, paddle.getPos.y));
+	//paddle.getPos;
+	//paddle.x -=  256;
+	paddle.getPos().x -= 10;
+}
+function MoveRight() {
+    console.log("Moving Right");
+	paddle.getPos().x += 10;
+}
+
+// Input Events
+var keysDown = {};
+addEventListener("keydown", function (e)
+{
+    keysDown[e.keyCode] = true;
+}, false);
+addEventListener("keyup", function (e)
+{
+    delete keysDown[e.keyCode];
+}, false);
 
 Buoyancy.prototype = Object.create(Demo.prototype);
 
@@ -141,6 +168,17 @@ Buoyancy.prototype.update = function(dt)
 	for (var i = 0; i < 3; i++){
 		this.space.step(dt);
 	}
+	
+	//document.getElementById("demo").onkeypress = function() {myFunction()};
+	
+	if (37 in keysDown) // left
+    {
+       MoveLeft();
+    }
+    if (39 in keysDown) // right
+    {
+        MoveRight();
+    }
 };
 
 // IDK
