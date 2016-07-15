@@ -40,7 +40,7 @@ var Buoyancy = function ()
 
 	// {
 		// Add the edges of the bucket
-		var bb = new cp.BB(20, 40, 420, 240);
+		var bb = new cp.BB(20, 40, 610, 240);
 		var radius = 5.0;
 
 		shape = space.addShape( new cp.SegmentShape(staticBody, cp.v(bb.l, bb.b), cp.v(bb.l, bb.t), radius));
@@ -87,7 +87,7 @@ var Buoyancy = function ()
     // FALLING Object 1
 		width = 10.0;
 		height = width*1.5;
-		mass = 0.3*FLUID_DENSITY*width*height;
+		mass = 1.3*FLUID_DENSITY*width*height;
 		moment = cp.momentForBox(mass, width, height);
 
 		body = space.addBody( new cp.Body(mass, moment));
@@ -104,7 +104,7 @@ var Buoyancy = function ()
     // FALLING Object 2
 		width = 10.0;
 		height = width * 1.5;
-		mass = 0.3 * FLUID_DENSITY * width * height;
+		mass = 1.3 * FLUID_DENSITY * width * height;
 		moment = cp.momentForBox(mass, width, height);
 
 		body = space.addBody(new cp.Body(mass, moment));
@@ -119,7 +119,7 @@ var Buoyancy = function ()
     // FALLING Object 2
 		width = 10.0;
 		height = width * 1.5;
-		mass = 0.3 * FLUID_DENSITY * width * height;
+		mass = 1.3 * FLUID_DENSITY * width * height;
 		moment = cp.momentForBox(mass, width, height);
 
 		body = space.addBody(new cp.Body(mass, moment));
